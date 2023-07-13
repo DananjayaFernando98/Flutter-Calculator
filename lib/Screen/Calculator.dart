@@ -50,14 +50,18 @@ class _CalculatorState extends State<Calculator> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 100,
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      text,
+                      overflow: TextOverflow.fade,
+                      softWrap: false,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 100,
+                      ),
                     ),
                   ),
                 ),
@@ -200,13 +204,13 @@ class _CalculatorState extends State<Calculator> {
       finalResult = doesContainDecimal(result);
     } else if (btnText == '.') {
       if (!result.toString().contains('.')) {
-        result = result.toString() + '.';
+        result = '$result.';
       }
       finalResult = result;
     } else if (btnText == '+/-') {
       result.toString().startsWith('-')
           ? result = result.toString().substring(1)
-          : result = '-' + result.toString();
+          : result = '-$result';
       finalResult = result;
     } else {
       result = result + btnText;
@@ -245,8 +249,9 @@ class _CalculatorState extends State<Calculator> {
   String doesContainDecimal(dynamic result) {
     if (result.toString().contains('.')) {
       List<String> splitDecimal = result.toString().split('.');
-      if (!(int.parse(splitDecimal[1]) > 0))
+      if (!(int.parse(splitDecimal[1]) > 0)) {
         return result = splitDecimal[0].toString();
+      }
     }
     return result;
   }
